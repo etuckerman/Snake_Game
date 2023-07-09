@@ -8,6 +8,8 @@ class Board
 public:
 	Board(Graphics& gfx);
 	void DrawCell(Location& loc, Color c);
+	int GetGridWidth() const;
+	int GetGridHeight() const;
 private:
 	static constexpr int dimension = 20;
 	static constexpr int width = 10;

@@ -17,3 +17,14 @@ void Board::DrawCell(Location& loc, Color c)
 
 	gfx.DrawRectDim(loc.x * dimension, loc.y * dimension, dimension, dimension, c); //grid coord * cell = position on screen
 }
+
+int Board::GetGridWidth() const
+{
+	return width;
+}
+
+
+int Board::GetGridHeight() const
+{
+	return height;
+}
