@@ -48,6 +48,8 @@ private:
 	Board brd;
 	Snake snake;
 	Location delta_loc = {1,0};
+	static constexpr int snakeMovePeriod = 20;                    //snake movement speed
+	int snakeMoveCounter = 0;
 	std::mt19937 rng;											  // efficient randomizer
 	/********************************/
 };

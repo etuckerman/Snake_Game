@@ -57,7 +57,19 @@ void Game::UpdateModel()
 	{
 		delta_loc = { 1, 0 };
 	}
-	snake.MoveBy(delta_loc);
+
+	++snakeMoveCounter;
+	if (snakeMoveCounter >= snakeMovePeriod)
+	{	
+		snakeMoveCounter = 0;
+		if (wnd.kbd.KeyIsPressed(VK_CONTROL))
+		{
+			snake.Grow();
+		}
+
+		snake.MoveBy(delta_loc);
+	}
+	
 }
 
 void Game::ComposeFrame()
