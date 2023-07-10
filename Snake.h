@@ -25,7 +25,8 @@ public:
 	Location GetNextHeadLocation(const Location& delta_loc) const;
 	void Grow();
 	void Draw(Board& brd) const;
-	bool IsInTile(const Location& target) const; //detect
+	bool IsInTileExceptEnd(const Location& target) const; //for collision detection
+	bool IsInTile(const Location& target) const;
 
 private:
 	static constexpr Color headColor = Colors::Yellow;			//head and body colours

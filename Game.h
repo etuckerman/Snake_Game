@@ -24,6 +24,7 @@
 #include "Mouse.h"
 #include "Graphics.h"
 #include "Board.h"
+#include "Goal.h"
 #include "Snake.h"
 #include <random>
 
@@ -48,9 +49,11 @@ private:
 	Board brd;
 	Snake snake;
 	Location delta_loc = {1,0};
+	std::mt19937 rng;
+	Goal goal;
 	static constexpr int snakeMovePeriod = 20;                    //snake movement speed
 	int snakeMoveCounter = 0;
 	bool gameIsOver = false;
-	std::mt19937 rng;											  // efficient randomizer
+											  // efficient randomizer
 	/********************************/
 };

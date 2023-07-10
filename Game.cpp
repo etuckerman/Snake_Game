@@ -28,7 +28,8 @@ Game::Game(MainWindow& wnd)
 	gfx(wnd),
 	brd(gfx),
 	rng(std::random_device()()),
-	snake({2,2})
+	snake({2,2}),
+	goal(rng, brd, snake)
 {
 }
 
@@ -66,18 +67,24 @@ void Game::UpdateModel()
 		{
 			snakeMoveCounter = 0;
 			const Location next = snake.GetNextHeadLocation(delta_loc);
-			if (!brd.IsInsideBoard(next) || snake.IsInTile(next))
+			if (!brd.IsInsideBoard(next) || snake.IsInTileExceptEnd(next))
 			{
 				gameIsOver = true;
 			}
 			else
 			{
-				if (wnd.kbd.KeyIsPressed(VK_CONTROL))
+				const bool eating = next == goal.GetLocation();
+				if (eating)
 				{
 					snake.Grow();
+					
+				}
+				snake.MoveBy(delta_loc);
+				if (eating)
+				{
+					goal.Respawn(rng, brd, snake);
 				}
 
-				snake.MoveBy(delta_loc);
 			}
 		}
 	}
@@ -86,6 +93,7 @@ void Game::UpdateModel()
 void Game::ComposeFrame()
 {
 	snake.Draw(brd);
+	goal.Draw(brd);
 	if (gameIsOver)
 	{
 		SpriteCodex::DrawGameOver(200, 200, gfx); //game over screen
