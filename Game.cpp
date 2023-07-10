@@ -20,6 +20,7 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
+#include "SpriteCodex.h"
 
 Game::Game(MainWindow& wnd)
 	:
@@ -41,40 +42,55 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	if (wnd.kbd.KeyIsPressed(VK_UP))
-	{
-		delta_loc = { 0, -1 };
-	}
-	else if (wnd.kbd.KeyIsPressed(VK_DOWN))
-	{
-		delta_loc = { 0, 1 };
-	}
-	if (wnd.kbd.KeyIsPressed(VK_LEFT))
-	{
-		delta_loc = { -1, 0 };
-	}
-	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
-	{
-		delta_loc = { 1, 0 };
-	}
+	if (!gameIsOver) {
 
-	++snakeMoveCounter;
-	if (snakeMoveCounter >= snakeMovePeriod)
-	{	
-		snakeMoveCounter = 0;
-		if (wnd.kbd.KeyIsPressed(VK_CONTROL))
+		if (wnd.kbd.KeyIsPressed(VK_UP))
 		{
-			snake.Grow();
+			delta_loc = { 0, -1 };
+		}
+		else if (wnd.kbd.KeyIsPressed(VK_DOWN))
+		{
+			delta_loc = { 0, 1 };
+		}
+		if (wnd.kbd.KeyIsPressed(VK_LEFT))
+		{
+			delta_loc = { -1, 0 };
+		}
+		if (wnd.kbd.KeyIsPressed(VK_RIGHT))
+		{
+			delta_loc = { 1, 0 };
 		}
 
-		snake.MoveBy(delta_loc);
+		++snakeMoveCounter;
+		if (snakeMoveCounter >= snakeMovePeriod)
+		{
+			snakeMoveCounter = 0;
+			const Location next = snake.GetNextHeadLocation(delta_loc);
+			if (!brd.IsInsideBoard(next) || snake.IsInTile(next))
+			{
+				gameIsOver = true;
+			}
+			else
+			{
+				if (wnd.kbd.KeyIsPressed(VK_CONTROL))
+				{
+					snake.Grow();
+				}
+
+				snake.MoveBy(delta_loc);
+			}
+		}
 	}
-	
 }
 
 void Game::ComposeFrame()
 {
 	snake.Draw(brd);
+	if (gameIsOver)
+	{
+		SpriteCodex::DrawGameOver(200, 200, gfx); //game over screen
+
+	}
 
 
 
