@@ -1,5 +1,6 @@
 #pragma once
 #include "Snake.h"
+#include <assert.h>
 
 Snake::Snake(const Location& loc)
 {
@@ -34,24 +35,26 @@ void Snake::Draw(Board& brd) const
 void Snake::Segment::InitHead(const Location& in_loc)
 {
 	loc = in_loc;
+	c = Snake::headColor;
 }
 
 void Snake::Segment::InitBody()
 {
-
+	c = Snake::bodyColor;
 }
 
 void Snake::Segment::Follow(const Segment& next)
 {
-
+	loc = next.loc;
 }
 
 void Snake::Segment::MoveBy(const Location& delta_loc)
 {
-
+	assert(abs(delta_loc.x) + abs(delta_loc.y) == 1); //force values to only be 1 or -1
+	loc.Add(delta_loc);
 }
 
 void Snake::Segment::Draw(Board& brd) const
 {
-
+	brd.DrawCell(loc, c);
 }
