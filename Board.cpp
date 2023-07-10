@@ -8,7 +8,7 @@ Board::Board(Graphics& gfx)
 
 }
 
-void Board::DrawCell(Location& loc, Color c)
+void Board::DrawCell(const Location& loc, Color c)
 {
 	assert(loc.x >= 0);				  //ensure window range is locked
 	assert(loc.x < width);
