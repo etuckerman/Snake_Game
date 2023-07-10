@@ -26,7 +26,8 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	brd(gfx),
-	rng(std::random_device()())
+	rng(std::random_device()()),
+	snake({2,2})
 {
 }
 
@@ -40,19 +41,41 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	if (wnd.kbd.KeyIsPressed(VK_UP))
+	{
+		delta_loc = { 0, -1 };
+	}
+	else if (wnd.kbd.KeyIsPressed(VK_DOWN))
+	{
+		delta_loc = { 0, 1 };
+	}
+	if (wnd.kbd.KeyIsPressed(VK_LEFT))
+	{
+		delta_loc = { -1, 0 };
+	}
+	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
+	{
+		delta_loc = { 1, 0 };
+	}
+	snake.MoveBy(delta_loc);
 }
 
 void Game::ComposeFrame()
 {
-	std::uniform_int_distribution<int> colorDist(0, 255);
-	for (int y = 0; y < brd.GetGridHeight(); y++)
-	{
-		for (int x = 0; x < brd.GetGridWidth(); x++)
-		{																				//test for randomizing colours
-			Location loc = { x,y };															
-			Color c(colorDist(rng), colorDist(rng), colorDist(rng));						
-			brd.DrawCell(loc, c);														 
-		}
+	snake.Draw(brd);
 
-	}
+
+
+
+	//std::uniform_int_distribution<int> colorDist(0, 255);
+	//for (int y = 0; y < brd.GetGridHeight(); y++)
+	//{
+	//	for (int x = 0; x < brd.GetGridWidth(); x++)
+	//	{																				//test for randomizing colours
+	//		Location loc = { x,y };															
+	//		Color c(colorDist(rng), colorDist(rng), colorDist(rng));						
+	//		brd.DrawCell(loc, c);														 
+	//	}
+
+	//}
 }
