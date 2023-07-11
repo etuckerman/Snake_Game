@@ -100,7 +100,7 @@ void Game::ComposeFrame()
 
 	}
 
-
+	brd.DrawBorder();
 
 
 	//std::uniform_int_distribution<int> colorDist(0, 255);
