@@ -6,11 +6,16 @@ Snake::Snake(const Location& loc)
 {
 	constexpr int nBodyColors = 4;
 	constexpr Color bodyColors[nBodyColors] = {
-	{10, 100, 32},
-	{10, 130, 48},
-	{18, 160, 48},
-	{10, 130, 48}
+		{10, 100, 32},
+		{10, 130, 48},								   //array for colour range of snake
+		{18, 160, 48},
+		{10, 130, 48}
 	};
+
+	for (int i = 0; i < nSegmentsMax; i++)
+	{
+		segments[i].InitBody(bodyColors[i % nBodyColors]); //modulus to constrain index's between 0-3
+	}
 	segments[0].InitHead(loc);
 }
 
