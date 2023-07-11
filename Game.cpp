@@ -90,6 +90,12 @@ void Game::UpdateModel()
 
 				}
 			}
+			++snakeMoveCounter;
+			if (snakeSpeedupCounter >= snakeMovePeriod)
+			{
+				snakeSpeedupCounter = 0;
+				snakeMovePeriod = std::max(snakeMovePeriod - 1, snakeMovePeriodMin); //check and use biggest number
+			}
 		}
 	}
 	else

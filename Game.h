@@ -51,8 +51,11 @@ private:
 	Location delta_loc = {1,0};
 	std::mt19937 rng;         // efficient randomizer
 	Goal goal;
-	static constexpr int snakeMovePeriod = 20;                    //snake movement speed
+	static constexpr int snakeMovePeriodMin = 4;
+	int snakeMovePeriod = 30;                    //snake movement speed
 	int snakeMoveCounter = 0;
+	static constexpr int snakeSpeedupPeriod = 180;
+	int snakeSpeedupCounter = 0;
 	bool gameIsOver = false;
 	bool gameIsStarted = false;
 	/********************************/
