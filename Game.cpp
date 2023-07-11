@@ -43,75 +43,89 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	if (!gameIsOver) {
+	if (gameIsStarted)
+	{
+		if (!gameIsOver)
+		{
 
-		if (wnd.kbd.KeyIsPressed(VK_UP))
-		{
-			delta_loc = { 0, -1 };
-		}
-		else if (wnd.kbd.KeyIsPressed(VK_DOWN))
-		{
-			delta_loc = { 0, 1 };
-		}
-		if (wnd.kbd.KeyIsPressed(VK_LEFT))
-		{
-			delta_loc = { -1, 0 };
-		}
-		if (wnd.kbd.KeyIsPressed(VK_RIGHT))
-		{
-			delta_loc = { 1, 0 };
-		}
-
-		++snakeMoveCounter;
-		if (snakeMoveCounter >= snakeMovePeriod)
-		{
-			snakeMoveCounter = 0;
-			const Location next = snake.GetNextHeadLocation(delta_loc);
-			if (!brd.IsInsideBoard(next) || snake.IsInTileExceptEnd(next))
+			if (wnd.kbd.KeyIsPressed(VK_UP))
 			{
-				gameIsOver = true;
+				delta_loc = { 0, -1 };
 			}
-			else
+			else if (wnd.kbd.KeyIsPressed(VK_DOWN))
 			{
-				const bool eating = next == goal.GetLocation();
-				if (eating)
-				{
-					snake.Grow();
-					
-				}
-				snake.MoveBy(delta_loc);
-				if (eating)
-				{
-					goal.Respawn(rng, brd, snake);
-				}
-
+				delta_loc = { 0, 1 };
 			}
+			if (wnd.kbd.KeyIsPressed(VK_LEFT))
+			{
+				delta_loc = { -1, 0 };
+			}
+			if (wnd.kbd.KeyIsPressed(VK_RIGHT))
+			{
+				delta_loc = { 1, 0 };
+			}
+
+			++snakeMoveCounter;
+			if (snakeMoveCounter >= snakeMovePeriod)
+			{
+				snakeMoveCounter = 0;
+				const Location next = snake.GetNextHeadLocation(delta_loc);
+				if (!brd.IsInsideBoard(next) || snake.IsInTileExceptEnd(next))
+				{
+					gameIsOver = true;
+				}
+				else
+				{
+					const bool eating = next == goal.GetLocation();
+					if (eating)
+					{
+						snake.Grow();
+
+					}
+					snake.MoveBy(delta_loc);
+					if (eating)
+					{
+						goal.Respawn(rng, brd, snake);
+					}
+
+				}
+			}
+		}
+	}
+	else
+	{
+		if (wnd.kbd.KeyIsPressed(VK_RETURN))
+		{
+			gameIsStarted = true;
 		}
 	}
 }
 
 void Game::ComposeFrame()
 {
-	snake.Draw(brd);
-	goal.Draw(brd);
-	if (gameIsOver)
+	if (gameIsStarted)
 	{
-		SpriteCodex::DrawGameOver(200, 200, gfx); //game over screen
-
+		snake.Draw(brd);
+		goal.Draw(brd);
+		if (gameIsOver)
+		{
+			SpriteCodex::DrawGameOver(350, 265, gfx);
+		}
+		brd.DrawBorder();
 	}
-
-	brd.DrawBorder();
-
-
-	//std::uniform_int_distribution<int> colorDist(0, 255);
-	//for (int y = 0; y < brd.GetGridHeight(); y++)
-	//{
-	//	for (int x = 0; x < brd.GetGridWidth(); x++)
-	//	{																				//test for randomizing colours
-	//		Location loc = { x,y };															
-	//		Color c(colorDist(rng), colorDist(rng), colorDist(rng));						
-	//		brd.DrawCell(loc, c);														 
-	//	}
-
-	//}
+	else
+	{
+		SpriteCodex::DrawTitle(290, 225, gfx);
+	}
 }
+		//std::uniform_int_distribution<int> colorDist(0, 255);
+		//for (int y = 0; y < brd.GetGridHeight(); y++)
+		//{
+		//	for (int x = 0; x < brd.GetGridWidth(); x++)
+		//	{																				//test for randomizing colours
+		//		Location loc = { x,y };															
+		//		Color c(colorDist(rng), colorDist(rng), colorDist(rng));						
+		//		brd.DrawCell(loc, c);														 
+		//	}
+
+		//}

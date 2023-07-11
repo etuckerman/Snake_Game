@@ -13,12 +13,12 @@ void Board::DrawCell(const Location& loc, Color c)
 	assert(loc.x >= 0);				  //ensure window range is locked
 	assert(loc.x < width);
 	assert(loc.y >= 0);
-	assert(loc.x < height);
+	assert(loc.y < height);
 
-	const int off_x = x;
-	const int off_y = y;
+	const int off_x = x + borderWidth + borderPadding;
+	const int off_y = y + borderWidth + borderPadding;
 
-	gfx.DrawRectDim(loc.x * dimension + off_x, loc.y * dimension + off_y, dimension, dimension, c); //grid coord * cell = position on screen
+	gfx.DrawRectDim(loc.x * dimension + off_x + cellPadding, loc.y * dimension + off_y + cellPadding, dimension, dimension , c); //grid coord * cell = position on screen
 }
 
 int Board::GetGridWidth() const
